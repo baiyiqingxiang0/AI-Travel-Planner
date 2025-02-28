@@ -4,9 +4,9 @@
 
 ## 🌟 在线演示
 
-👉 [点击这里查看在线演示](https://yourusername.github.io/ai-travel-planner/)
+👉 [点击这里查看在线演示](http://www.baiyiqingxiang.online:8005/)
 
-![项目预览](https://via.placeholder.com/800x400?text=AI旅行规划助手预览图)
+![项目预览](assets/images/preview.png)
 
 ## 功能特点
 
@@ -34,7 +34,7 @@
 
 ### 在线使用
 
-直接访问[在线演示](https://yourusername.github.io/ai-travel-planner/)即可使用。
+直接访问[在线演示](http://www.baiyiqingxiang.online:8005/)即可使用。
 
 ### 本地部署
 
@@ -146,8 +146,6 @@ const prompt = `你是一位资深旅行规划师。请为用户生成一个去$
     model: 'moonshot-v1-8k'
 }
 ```
-
-> **注意**：在将代码推送到GitHub前，请确保已将API密钥替换为占位符，避免泄露敏感信息。
 
 ## 贡献指南
 
