@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI旅行规划助手</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 自定义Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1B8CD1',
+                        secondary: '#2AABEE',
+                        background: '#f8f9fa',
+                        'dark-bg': '#121212',
+                        'dark-card': '#1e1e1e',
+                        'error-bg': '#fee2e2'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'custom': '0 8px 32px rgba(0,0,0,0.1)',
+                        'custom-dark': '0 8px 32px rgba(0,0,0,0.3)'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="font-sans bg-background dark:bg-dark-bg text-gray-800 dark:text-gray-200 min-h-screen flex flex-col transition-colors duration-300">
+    <!-- 顶部导航栏 -->
+    <header class="sticky top-0 z-50 bg-white dark:bg-dark-bg shadow-sm">
+        <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
+                        AI旅行规划助手
+                    </h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- 暗黑模式切换按钮 -->
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 错误提示条 -->
+    <div id="error-notification" class="hidden transform -translate-y-full transition-transform duration-300 bg-error-bg text-red-800 p-4 text-center">
+        <p class="flex items-center justify-center">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <span id="error-message">请填写所有必填字段</span>
+        </p>
+    </div>
+
+    <main class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        <!-- 输入区 -->
+        <section id="input-section" class="max-w-2xl mx-auto transition-all duration-500">
+            <div class="bg-white dark:bg-dark-card rounded-xl shadow-custom dark:shadow-custom-dark p-6 md:p-8">
+                <h2 class="text-xl md:text-2xl font-semibold mb-6 text-center">规划您的完美旅程</h2>
+                
+                <form id="travel-form" class="space-y-6">
+                    <!-- 目的地输入框 -->
+                    <div class="relative">
+                        <div class="form-floating">
+                            <input type="text" id="destination" name="destination" 
+                                class="block w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 
+                                focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-800 
+                                transition-all duration-300 peer placeholder-transparent"
+                                placeholder="目的地" required>
+                            <label for="destination" 
+                                class="absolute text-gray-500 dark:text-gray-400 duration-300 transform 
+                                -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 
+                                px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 
+                                peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 
+                                peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 
+                                peer-focus:text-primary left-3">
+                                目的地
+                            </label>
+                        </div>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <i class="fas fa-map-marker-alt text-gray-400"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- 天数选择器 -->
+                    <div class="relative">
+                        <div class="form-floating">
+                            <input type="number" id="days" name="days" min="1" max="30" 
+                                class="block w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 
+                                focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-800 
+                                transition-all duration-300 peer placeholder-transparent"
+                                placeholder="旅行天数" required>
+                            <label for="days" 
+                                class="absolute text-gray-500 dark:text-gray-400 duration-300 transform 
+                                -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 
+                                px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 
+                                peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 
+                                peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 
+                                peer-focus:text-primary left-3">
+                                旅行天数
+                            </label>
+                        </div>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <i class="fas fa-calendar-alt text-gray-400"></i>
+                        </div>
+                        <!-- 移除浏览器默认的数字输入控件 -->
+                        <style>
+                            /* 移除Chrome、Safari、Edge、Opera的默认控件 */
+                            input[type=number]::-webkit-inner-spin-button, 
+                            input[type=number]::-webkit-outer-spin-button { 
+                                -webkit-appearance: none; 
+                                margin: 0; 
+                            }
+                            /* 移除Firefox的默认控件 */
+                            input[type=number] {
+                                -moz-appearance: textfield;
+                            }
+                        </style>
+                    </div>
+                    
+                    <!-- 生成按钮 -->
+                    <button type="submit" id="generate-btn" 
+                        class="w-full py-3 px-6 rounded-lg bg-gradient-to-r from-secondary to-primary 
+                        text-white font-medium shadow-lg hover:shadow-xl 
+                        transform hover:scale-[1.02] transition-all duration-300 
+                        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                        <span class="flex items-center justify-center">
+                            <span>生成行程</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 加载状态 -->
+        <section id="loading-section" class="max-w-4xl mx-auto mt-8 hidden">
+            <div class="bg-white dark:bg-dark-card rounded-xl shadow-custom dark:shadow-custom-dark p-6 md:p-8">
+                <div class="flex flex-col items-center justify-center py-8">
+                    <div class="skeleton-loader mb-4"></div>
+                    <p class="text-lg text-gray-600 dark:text-gray-400">正在为您生成完美行程...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 结果区 -->
+        <section id="result-section" class="max-w-4xl mx-auto mt-8 hidden">
+            <div class="bg-white dark:bg-dark-card rounded-xl shadow-custom dark:shadow-custom-dark p-6 md:p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl md:text-2xl font-semibold">
+                        <span id="destination-display">目的地</span> - <span id="days-display">0</span>天行程
+                    </h2>
+                    <button id="new-plan-btn" class="text-primary hover:text-secondary transition-colors">
+                        <i class="fas fa-plus-circle mr-1"></i>新行程
+                    </button>
+                </div>
+                
+                <!-- 行程卡片容器 -->
+                <div id="itinerary-container" class="space-y-6">
+                    <!-- 行程卡片将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white dark:bg-dark-bg shadow-inner py-6 mt-auto">
+        <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-500 dark:text-gray-400">
+                © 2023 AI旅行规划助手 | 让旅行更简单
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html> 

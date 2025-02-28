@@ -1,0 +1,155 @@
+/* 全局样式 */
+:root {
+    --primary: #1B8CD1;
+    --secondary: #2AABEE;
+    --background: #f8f9fa;
+    --dark-bg: #121212;
+    --dark-card: #1e1e1e;
+    --error-bg: #fee2e2;
+    --transition-speed: 300ms;
+}
+
+/* 平滑滚动 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 表单浮动标签效果 */
+.form-floating {
+    position: relative;
+}
+
+/* 输入框聚焦时的流光效果 */
+input:focus {
+    box-shadow: 0 0 0 2px rgba(27, 140, 209, 0.2);
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px rgba(42, 171, 238, 0.2);
+    }
+    to {
+        box-shadow: 0 0 10px rgba(27, 140, 209, 0.4);
+    }
+}
+
+/* 骨架屏加载动画 */
+.skeleton-loader {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+.dark .skeleton-loader {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    background-size: 200% 100%;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* 错误提示动画 */
+#error-notification.show {
+    transform: translateY(0);
+}
+
+/* 行程卡片悬停效果 */
+.itinerary-card {
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.itinerary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.dark .itinerary-card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* 时间轴样式 */
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--secondary), var(--primary));
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -2.25rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    transform: translateX(50%);
+}
+
+/* 复制按钮效果 */
+.copy-btn {
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+}
+
+.itinerary-card:hover .copy-btn {
+    opacity: 1;
+}
+
+.copy-btn.copied {
+    background-color: #10B981;
+}
+
+/* 渐现动画 */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 响应式调整 */
+@media (max-width: 640px) {
+    .timeline {
+        padding-left: 1.5rem;
+    }
+    
+    .timeline-dot {
+        left: -1.75rem;
+    }
+}
+
+/* 暗黑模式切换动画 */
+.dark-mode-transition {
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+} 
